@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -15,20 +15,36 @@ namespace employeesWebApi.Controllers
     public class ValuesController : ControllerBase
     {
         // GET api/values
-        [Authorize(Roles = "Admin")]
+        //[Authorize(Roles = "Admin")]
         [HttpGet]
         public ActionResult<IEnumerable<string>> Get()
         {
-            return new string[] { "Only admins see this:", "value1", "value2" };
-        }
+            if (User.IsInRole("Admin")) 
+            { 
+                return new string[] {"Admin sees this"};
+            }
 
-        // GET api/values/5
-        [Authorize(Roles = "User")]
-        [HttpGet("{id}")]
-        public ActionResult<string> Get(int id)
-        {
-            return "Only users see this: value";
+            else if (User.IsInRole("User"))
+            {
+                return new string[] { "User sees this" };
+            }
+
+            else 
+            //return new string[] { "Only admins see this:", "value1", "value2" };
+                return new string[] { "Both Admin and User see this:", "This is Get:", "value1", "value2" };
         }
+       
+
+        //// GET api/values
+        //[Authorize(Roles = "Admin")]
+        //[HttpGet("{id}")]
+        //public ActionResult<string> GetUser()
+        //{
+        //    return "Only admins see this: value";
+        //}
+
+
+
 
         // POST api/values
         [HttpPost]
