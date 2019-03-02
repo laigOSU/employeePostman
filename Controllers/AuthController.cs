@@ -21,7 +21,6 @@ namespace employeeRecognition.Controllers
     //[Route("[controller]")]
     public class AuthController : ControllerBase  // So you get token at: http://locahost:50226/Home  , nothing after backslash
     {
-
         private DataTable dt { get; set; }
 
         private DbConnection sqlConnection = new DbConnection();
@@ -41,23 +40,19 @@ namespace employeeRecognition.Controllers
 
             String sql = @query;
 
-
             Console.WriteLine("Query: " + sql);
             dt = sqlConnection.Connection(sql);
 
 
-
             Console.WriteLine(sql);
-
 
             // If nothing returned in datatable, then wrong email + psw
             if (dt.Rows.Count == 0)   // https://stackoverflow.com/questions/12358950/checking-if-a-datatable-is-null
             {
                 return BadRequest();
-              }
+                }
 
             else {
-
                 String roleQuery = $"SELECT role FROM userAcct WHERE email='{User.email}'";
                 String checkRole = @roleQuery;
 
@@ -74,11 +69,9 @@ namespace employeeRecognition.Controllers
                 // we pass our securityKey to it.
                 var symmetricSecurityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(securityKey));
 
-
                 // 3. Need to create credentials for signing the token
                 // Pass our symmetricSecurityKey. Then choose algo for generating, sign, and validate the token 
                 var signingCredentials = new SigningCredentials(symmetricSecurityKey, SecurityAlgorithms.HmacSha256Signature);
-
 
                 // 3a. Add claims (user type in JWT payload)
                 var claims = new List<Claim>();
@@ -87,12 +80,9 @@ namespace employeeRecognition.Controllers
                 // else 
                 // then claims.Add = Admin
 
-
-
                 // https://stackoverflow.com/questions/29046715/extract-values-from-datatable-with-single-row/29046726
 
                 DataRow row = dt.Rows[0];
-
                 int roleID = (int)row["role"];
 
                 Console.WriteLine("roleID is: " + roleID);
@@ -105,10 +95,7 @@ namespace employeeRecognition.Controllers
                     claims.Add(new Claim(ClaimTypes.Role, "User"));
                 }
 
-                  
-
                 //claims.Add(new Claim("Custom_Claim", "Custom_value"));
-
 
                 // 4. Need to create the token
                 var token = new JwtSecurityToken(
@@ -123,13 +110,7 @@ namespace employeeRecognition.Controllers
                 // We need the JWT SecurityTokenHandler to return, from this token, a string that can be used in request to our API
                 // The WriteToken will return string version of token, which we return to the client
                 return Ok(new JwtSecurityTokenHandler().WriteToken(token));
-
-
             }
-
-
-
         }
-
     }
 }
