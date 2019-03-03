@@ -13,14 +13,14 @@ using Microsoft.AspNetCore.Authorization;
 namespace employeeRecognition.Controllers
 {
     [Route("api/[controller]")]
-    [Authorize(Roles = "Admin")]
+    // [Authorize(Roles = "Admin")] // <-- UNCOMMENT THIS WHEN LOGIN TOKENS WORK
     public class UsersController : Controller
     {
         private DataTable dt { get; set; }
 
         private DbConnection sqlConnection = new DbConnection();
 
-        //[Authorize(Roles = "Admin")]
+       
         [HttpGet("[action]")]
         public IEnumerable<UserAcct> Index()
         {
