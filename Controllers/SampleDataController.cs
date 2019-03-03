@@ -8,7 +8,9 @@ using System.Data;
 
 namespace employeeRecognition.Controllers
 {
+
     [Route("api/[controller]")]
+    // [Authorize(Roles = "User")] // <-- UNCOMMENT THIS WHEN LOGIN TOKENS WORK
     public class SampleDataController : Controller
     {
 
